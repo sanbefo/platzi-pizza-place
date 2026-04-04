@@ -28,9 +28,9 @@ public class PizzaEntity {
     @Column(nullable = false, columnDefinition = "DECIMAL(5, 2)")
     private Double price;
     @Column(columnDefinition = "TINYINT", nullable = false)
-    private boolean vegetarian;
+    private Boolean vegetarian;
     @Column(columnDefinition = "TINYINT", nullable = false)
-    private boolean vegan;
+    private Boolean vegan;
     @Column(columnDefinition = "TINYINT", nullable = false)
-    private boolean available;
+    private Boolean available;
 }

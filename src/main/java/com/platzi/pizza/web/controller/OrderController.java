@@ -1,0 +1,37 @@
+package com.platzi.pizza.web.controller;
+
+import com.platzi.pizza.persistence.entity.OrderEntity;
+import com.platzi.pizza.service.OrderService;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    private final OrderService service;
+
+    @Autowired
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderEntity>> getAll() {
+        return ResponseEntity.ok(this.service.getAll());
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<List<OrderEntity>> getTodayOrders() {
+        return ResponseEntity.ok(this.service.getTodayOrders());
+    }
+
+    @GetMapping("/outside")
+    public ResponseEntity<List<OrderEntity>> getOutsideOrders() {
+        return ResponseEntity.ok(this.service.getOutsideOrders());
+    }
+}

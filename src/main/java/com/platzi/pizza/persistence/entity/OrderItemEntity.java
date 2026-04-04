@@ -1,5 +1,6 @@
 package com.platzi.pizza.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -22,12 +23,12 @@ public class OrderItemEntity {
 
     @Id
     @Column(name = "id_order", nullable = false)
-    private int idOrder;
+    private Integer idOrder;
     @Id
     @Column(name = "id_item", nullable = false)
-    private int idItem;
+    private Integer idItem;
     @Column(name = "id_pizza", nullable = false)
-    private int idPizza;
+    private Integer idPizza;
     @Column(nullable = false, columnDefinition = "DECIMAL(2, 1)")
     private double quantity;
     @Column(nullable = false, columnDefinition = "DECIMAL(5, 2)")
@@ -35,9 +36,10 @@ public class OrderItemEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_order", referencedColumnName = "id_order", insertable = false, updatable = false)
+    @JsonIgnore
     private OrderEntity order;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_pizza", referencedColumnName = "id_pizza", insertable = false, updatable = false)
     private PizzaEntity pizza;
 }
