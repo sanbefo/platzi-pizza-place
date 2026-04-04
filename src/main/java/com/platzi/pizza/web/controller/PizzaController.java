@@ -64,8 +64,11 @@ public class PizzaController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<PizzaEntity>> getAvailable() {
-        return ResponseEntity.ok(this.service.getAvailable());
+    public ResponseEntity<Page<PizzaEntity>> getAvailable(
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int elements,
+        @RequestParam(defaultValue = "price") String sortBy,
+        @RequestParam(defaultValue = "ASC") String sortOrder) {
+        return ResponseEntity.ok(this.service.getAvailable(page, elements, sortBy, sortOrder));
     }
 
     @PostMapping
