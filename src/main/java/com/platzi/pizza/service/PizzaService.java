@@ -74,7 +74,7 @@ public class PizzaService {
         return this.repository.countByVeganTrue();
     }
 
-    @Transactional(noRollbackFor = EmailApiException.class, propagation = Propagation.REQUIRED)
+    @Transactional(noRollbackFor = EmailApiException.class)
     public void updatePrice(UpdatePizzaPriceDto pizzaPriceDto) {
         this.repository.updatePrice(pizzaPriceDto);
         this.sendEmail();
