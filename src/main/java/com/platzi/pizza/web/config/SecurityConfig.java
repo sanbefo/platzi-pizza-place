@@ -1,5 +1,8 @@
 package com.platzi.pizza.web.config;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,15 +14,25 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
+    private final JwtFilter filter;
+
+    @Autowired
+    public SecurityConfig(JwtFilter filter) {
+        this.filter = filter;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults())
+            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers( "/api/auth/**").permitAll()
                 .requestMatchers( "/api/customers/**").hasAnyRole("ADMIN", "CUSTOMER")
@@ -28,7 +41,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
                 .requestMatchers("/api/orders/random").hasRole("random_order")
                 .requestMatchers("/api/orders/**").hasRole("ADMIN")
-                .anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
+                .anyRequest().authenticated())
+            .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
