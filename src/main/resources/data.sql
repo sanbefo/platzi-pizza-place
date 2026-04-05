@@ -4,6 +4,8 @@ TRUNCATE `order_item`;
 TRUNCATE `pizza_order`;
 TRUNCATE `customer`;
 TRUNCATE `pizza`;
+TRUNCATE `user`;
+TRUNCATE `user_role`;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- INSERT CUSTOMERS
@@ -64,3 +66,13 @@ VALUES
 (5, 1, 10, 0.5, 11.0),
 (5, 2, 12, 0.5, 9.5),
 (6, 1, 11, 1, 23);
+
+INSERT INTO `user` (`username`, `password`, `email`, `locked`, `disabled`)
+VALUES
+("admin", "$2y$10$poxGpM7Cx86pHh7YPnzCnuKuK1zcaL.oirIInZ9dK..zlAlCq7txy", "admin@platzi.com", 0, 0),
+("customer", "$2y$10$.Dy4LN/OrV41r7s6a4cuRuWrrr4SJ.oFPSWxfZyOHYS9jQRNH64Ri", "customer@platzi.com", 0, 0);
+
+INSERT INTO `user_role` (`role`, `username`, `granted_date`)
+VALUES
+("ADMIN", "admin", NOW()),
+("CUSTOMER", "customer", NOW());
