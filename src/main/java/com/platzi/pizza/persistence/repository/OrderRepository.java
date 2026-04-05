@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -13,7 +14,6 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity, Integer
 
     List<OrderEntity> findAllByDateAfter(LocalDateTime date);
     List<OrderEntity> findAllByMethodIn(List<String> methods);
-
     @Query(value = "SELECT * FROM pizza_order WHERE id_customer = :id", nativeQuery = true)
     List<OrderEntity> findCustomerOrders(@Param("id") String idCustomer);
     @Query(value = """
@@ -27,4 +27,7 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity, Integer
         GROUP BY po.id_order, cu.name, po.date, po.total
         """ , nativeQuery = true)
     OrderSummary findSummary(@Param("orderId") int orderId);
+    @Procedure(value = "take_random_pizza_order", outputParameterName = "order_taken")
+    boolean saveRandomOrder(@Param("id_customer") String idCustomer,
+        @Param("method") String method);
 }
