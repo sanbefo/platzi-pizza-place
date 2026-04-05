@@ -1,6 +1,7 @@
 package com.platzi.pizza.service;
 
 import com.platzi.pizza.persistence.entity.OrderEntity;
+import com.platzi.pizza.persistence.projection.OrderSummary;
 import com.platzi.pizza.persistence.repository.OrderRepository;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -33,5 +34,13 @@ public class OrderService {
     public List<OrderEntity> getOutsideOrders() {
         List<String> methods = Arrays.asList(DELIVERY, CARRYOUT);
         return this.repository.findAllByMethodIn(methods);
+    }
+
+    public List<OrderEntity> getOrdersByCustomer(String idCustomer) {
+        return this.repository.findCustomerOrders(idCustomer);
+    }
+
+    public OrderSummary getSummary(int orderId) {
+        return this.repository.findSummary(orderId);
     }
 }
